@@ -1,0 +1,21 @@
+<!doctype html><html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matemàtiques · Batxillerat</title><link rel="stylesheet" href="style.css"></head><body>
+<header><h1>Matemàtiques · Batxillerat</h1>
+<div class="filtres"><select id="curs"><option value="">Tots els cursos</option></select>
+<select id="mod"><option value="">Totes les modalitats</option></select>
+<select id="tipus"><option value="">Tots els tipus</option></select>
+<input id="q" placeholder="Cerca…"></div></header><main id="llista"></main>
+<script>
+let D=[];const $=i=>document.getElementById(i);
+const uniq=k=>[...new Set(D.map(d=>d[k]).filter(Boolean))].sort();
+function omple(id,k){uniq(k).forEach(v=>$(id).add(new Option(v,v)))}
+function pinta(){
+ const c=$('curs').value,m=$('mod').value,t=$('tipus').value,q=$('q').value.toLowerCase();
+ const f=D.filter(d=>(!c||d.curs==c)&&(!m||d.modalitat==m||d.modalitat=='tots')&&(!t||d.tipus==t)&&(!q||(d.title+d.tema).toLowerCase().includes(q)));
+ const g={};f.forEach(d=>(g[d.tema||'altres']??=[]).push(d));
+ $('llista').innerHTML=Object.keys(g).sort().map(k=>`<h2>${k}</h2><div class="cards">`+g[k].map(d=>
+ `<a class="card" href="visor.html?f=${encodeURIComponent(d.path)}"><b>${d.title}</b><small>${[d.curs,d.modalitat,d.tipus].filter(Boolean).map(x=>`<span class="tag">${x}</span>`).join('')}</small></a>`).join('')+'</div>').join('')||'<p>Cap resultat.</p>';
+}
+fetch('materials.json').then(r=>r.json()).then(j=>{D=j;omple('curs','curs');omple('mod','modalitat');omple('tipus','tipus');
+ ['curs','mod','tipus','q'].forEach(i=>$(i).addEventListener('input',pinta));pinta()});
+</script></body></html>

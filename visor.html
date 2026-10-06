@@ -1,0 +1,18 @@
+<!doctype html><html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fitxa</title><link rel="stylesheet" href="style.css">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script></head><body>
+<header class="nav"><a href="index.html">← Índex</a> · <button onclick="print()">Imprimeix / PDF</button></header>
+<main><article id="a">Carregant…</article></main>
+<script>
+const f=new URLSearchParams(location.search).get('f');
+fetch(f).then(r=>r.text()).then(t=>{
+ t=t.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/,'');const M=[];
+ // protegeix les fórmules perquè marked no les malmeti
+ t=t.replace(/\$\$([\s\S]+?)\$\$|\$([^\n$]+?)\$/g,(s,a,b)=>{M.push(a!==undefined?'\\['+a+'\\]':'\\('+b+'\\)');return '@@M'+(M.length-1)+'@@'});
+ let h=marked.parse(t).replace(/@@M(\d+)@@/g,(s,i)=>M[i]);
+ const el=document.getElementById('a');el.innerHTML=h;document.title=(el.querySelector('h1')||{}).textContent||'Fitxa';
+ const go=()=>window.MathJax&&MathJax.typesetPromise?MathJax.typesetPromise([el]):setTimeout(go,150);go();
+}).catch(()=>document.getElementById('a').textContent='No s\'ha pogut carregar la fitxa.');
+</script></body></html>

@@ -3,10 +3,21 @@
 <script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script></head><body>
-<header class="nav"><a href="index.html">← Índex</a> · <button onclick="print()">Imprimeix / PDF</button></header>
-<main><article id="a">Carregant…</article></main>
+<header class="nav"><a href="index.html">← Índex</a> <span id="tema"></span> <button onclick="print()">Imprimeix / PDF</button></header>
+<main><article id="a">Carregant…</article><nav id="pn" class="pn"></nav></main>
 <script>
 const f=new URLSearchParams(location.search).get('f');
+const BL={teoria:'Teoria',exercicis:'Exercicis',selectivitat:'Selectivitat'};
+fetch('materials.json').then(r=>r.json()).then(D=>{
+ const cur=D.find(d=>d.path===f);if(!cur)return;
+ const dir=p=>p.replace(/\/[^/]*$/,'');
+ const sib=D.filter(d=>dir(d.path)===dir(f)).sort((a,b)=>a.ordre-b.ordre);
+ const lab=d=>d.bloc==='selectivitat'&&d.curs==='1r'?'Difícils i exàmens':(BL[d.bloc]||d.title);
+ const lnk=d=>`visor.html?f=${encodeURIComponent(d.path)}`;
+ document.getElementById('tema').innerHTML='· <b>'+(cur.tematitol||cur.title)+'</b> '+sib.map(d=>d.path===f?`<span class="chip on">${lab(d)}</span>`:`<a class="chip" href="${lnk(d)}">${lab(d)}</a>`).join('');
+ const i=sib.findIndex(d=>d.path===f),pv=sib[i-1],nx=sib[i+1];
+ document.getElementById('pn').innerHTML=(pv?`<a href="${lnk(pv)}">← ${lab(pv)}</a>`:'<span></span>')+(nx?`<a href="${lnk(nx)}">${lab(nx)} →</a>`:'<span></span>');
+}).catch(()=>{});
 fetch(f).then(r=>r.text()).then(t=>{
  t=t.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/,'');const M=[];
  // protegeix les fórmules perquè marked no les malmeti

@@ -1,21 +1,31 @@
 <!doctype html><html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Matemàtiques · Batxillerat</title><link rel="stylesheet" href="style.css"></head><body>
 <header><h1>Matemàtiques · Batxillerat</h1>
-<div class="filtres"><select id="curs"><option value="">Tots els cursos</option></select>
-<select id="mod"><option value="">Totes les modalitats</option></select>
-<select id="tipus"><option value="">Tots els tipus</option></select>
-<input id="q" placeholder="Cerca…"></div></header><main id="llista"></main>
+<div class="filtres"><select id="sec"><option value="">Tots els cursos</option></select>
+<input id="q" placeholder="Cerca un tema…"></div></header><main id="llista"></main>
 <script>
+const SEC={'1r':'1r de Batxillerat','2n-cientific':'2n de Batxillerat · Científic','2n-social':'2n de Batxillerat · CCSS'};
+const BL=[['teoria','Teoria'],['exercicis','Exercicis'],['selectivitat','Selectivitat']];
 let D=[];const $=i=>document.getElementById(i);
-const uniq=k=>[...new Set(D.map(d=>d[k]).filter(Boolean))].sort();
-function omple(id,k){uniq(k).forEach(v=>$(id).add(new Option(v,v)))}
+const dir=p=>p.replace(/\/[^/]*$/,'');
+const sec=d=>d.path.split('/')[1];
 function pinta(){
- const c=$('curs').value,m=$('mod').value,t=$('tipus').value,q=$('q').value.toLowerCase();
- const f=D.filter(d=>(!c||d.curs==c)&&(!m||d.modalitat==m||d.modalitat=='tots')&&(!t||d.tipus==t)&&(!q||(d.title+d.tema).toLowerCase().includes(q)));
- const g={};f.forEach(d=>(g[d.tema||'altres']??=[]).push(d));
- $('llista').innerHTML=Object.keys(g).sort().map(k=>`<h2>${k}</h2><div class="cards">`+g[k].map(d=>
- `<a class="card" href="visor.html?f=${encodeURIComponent(d.path)}"><b>${d.title}</b><small>${[d.curs,d.modalitat,d.tipus].filter(Boolean).map(x=>`<span class="tag">${x}</span>`).join('')}</small></a>`).join('')+'</div>').join('')||'<p>Cap resultat.</p>';
+ const s=$('sec').value,q=$('q').value.toLowerCase(),g={};
+ D.forEach(d=>{(g[dir(d.path)]??=[]).push(d)});
+ let h='';
+ Object.keys(SEC).filter(k=>!s||k==s).forEach(k=>{
+  const temes=Object.values(g).filter(a=>sec(a[0])==k&&(!q||(a[0].tematitol||'').toLowerCase().includes(q)))
+    .sort((a,b)=>(a[0].tematitol||'').localeCompare(b[0].tematitol||'','ca'));
+  if(!temes.length)return;
+  h+=`<h2>${SEC[k]}</h2><div class="cards">`+temes.map(a=>{
+   const by={};a.forEach(d=>by[d.bloc]=d);
+   return `<div class="card tema"><b>${a[0].tematitol||a[0].title}</b><div class="chips">`+BL.map(([b,l])=>{
+     if(b=='selectivitat'&&k=='1r')l='Difícils i exàmens';
+     return by[b]?`<a class="chip" href="visor.html?f=${encodeURIComponent(by[b].path)}">${l}</a>`:`<span class="chip off">${l}</span>`}).join('')+'</div></div>'}).join('')+'</div>';
+ });
+ $('llista').innerHTML=h||'<p>Cap resultat.</p>';
 }
-fetch('materials.json').then(r=>r.json()).then(j=>{D=j;omple('curs','curs');omple('mod','modalitat');omple('tipus','tipus');
- ['curs','mod','tipus','q'].forEach(i=>$(i).addEventListener('input',pinta));pinta()});
+fetch('materials.json').then(r=>r.json()).then(j=>{D=j;
+ Object.entries(SEC).forEach(([k,v])=>$('sec').add(new Option(v,k)));
+ ['sec','q'].forEach(i=>$(i).addEventListener('input',pinta));pinta()});
 </script></body></html>

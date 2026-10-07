@@ -1,5 +1,3 @@
-PUBLICAR AMB GITHUB PAGES
-Al repositori: Add file > Upload files i arrossega el CONTINGUT d'aquesta carpeta (index.html, visor.html,
-style.css, actualitza.py, .github i la carpeta content). Substitueix el que hi hagi. Commit. En ~1 minut és publicat.
-AFEGIR MATERIAL: puja un .md a content/2n-cientific/<tema>/ o content/2n-social/<tema>/ (les imatges a la subcarpeta img/).
-Capçalera: title, curs, modalitat (cientific/social/tots), tema, tipus (teoria/exercicis/solucions)
+ORGANITZACIÓ: cada tema és una carpeta amb tres blocs:  1-teoria.md  2-exercicis.md  3-selectivitat.md
+(les imatges, a la subcarpeta img/). Capçalera de cada fitxa: title, tematitol, curs, modalitat, tema, bloc, ordre.
+PUBLICAR: Add file > Upload files > arrossega el CONTINGUT de la carpeta. L'índex es regenera sol (GitHub Actions).

@@ -1,0 +1,90 @@
+[
+ {
+  "title": "Optimització: aplicacions de la derivada",
+  "curs": "2n",
+  "modalitat": "cientific",
+  "tema": "derivades",
+  "tipus": "exercicis",
+  "path": "content/2n-cientific/derivades/optimitzacio.md"
+ },
+ {
+  "title": "Determinants: exercicis",
+  "curs": "2n",
+  "modalitat": "tots",
+  "tema": "determinants",
+  "tipus": "exercicis",
+  "path": "content/2n-cientific/determinants/determinants-exercicis.md"
+ },
+ {
+  "title": "Assímptotes",
+  "curs": "2n",
+  "modalitat": "cientific",
+  "tema": "limits",
+  "tipus": "teoria",
+  "path": "content/2n-cientific/limits/assimptotes.md"
+ },
+ {
+  "title": "Límits i continuïtat: dossier de repàs",
+  "curs": "2n",
+  "modalitat": "cientific",
+  "tema": "limits",
+  "tipus": "teoria",
+  "path": "content/2n-cientific/limits/dossier-limits.md"
+ },
+ {
+  "title": "Límits amb arrels: exercicis resolts",
+  "curs": "2n",
+  "modalitat": "cientific",
+  "tema": "limits",
+  "tipus": "exercicis",
+  "path": "content/2n-cientific/limits/limits-radicals-exercicis.md"
+ },
+ {
+  "title": "Probabilitat condicionada: exercici de classe",
+  "curs": "2n",
+  "modalitat": "tots",
+  "tema": "probabilitat",
+  "tipus": "exercicis",
+  "path": "content/2n-cientific/probabilitat/probabilitat-condicionada-classe.md"
+ },
+ {
+  "title": "Probabilitat",
+  "curs": "2n",
+  "modalitat": "cientific",
+  "tema": "probabilitat",
+  "tipus": "teoria",
+  "path": "content/2n-cientific/probabilitat/probabilitat.md"
+ },
+ {
+  "title": "Vectors a l'espai",
+  "curs": "2n",
+  "modalitat": "cientific",
+  "tema": "vectors",
+  "tipus": "teoria",
+  "path": "content/2n-cientific/vectors/vectors-espai.md"
+ },
+ {
+  "title": "Introducció a les derivades",
+  "curs": "2n",
+  "modalitat": "social",
+  "tema": "derivades",
+  "tipus": "teoria",
+  "path": "content/2n-social/derivades/intro-derivades.md"
+ },
+ {
+  "title": "Intervals de confiança",
+  "curs": "2n",
+  "modalitat": "social",
+  "tema": "estadistica",
+  "tipus": "teoria",
+  "path": "content/2n-social/estadistica/intervals-de-confianca.md"
+ },
+ {
+  "title": "Funcions, límits i continuïtat",
+  "curs": "2n",
+  "modalitat": "social",
+  "tema": "limits",
+  "tipus": "teoria",
+  "path": "content/2n-social/limits/limits-funcions.md"
+ }
+]

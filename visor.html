@@ -10,9 +10,12 @@ const f=new URLSearchParams(location.search).get('f');
 fetch(f).then(r=>r.text()).then(t=>{
  t=t.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/,'');const M=[];
  // protegeix les fórmules perquè marked no les malmeti
- t=t.replace(/\$\$([\s\S]+?)\$\$|\$([^\n$]+?)\$/g,(s,a,b)=>{M.push(a!==undefined?'\\['+a+'\\]':'\\('+b+'\\)');return '@@M'+(M.length-1)+'@@'});
+ t=t.replace(/\$\$([\s\S]+?)\$\$|(?<!\\)\$([^\n$]+?)(?<!\\)\$/g,(s,a,b)=>{M.push(a!==undefined?'\\['+a+'\\]':'\\('+b+'\\)');return '@@M'+(M.length-1)+'@@'});
  let h=marked.parse(t).replace(/@@M(\d+)@@/g,(s,i)=>M[i]);
- const el=document.getElementById('a');el.innerHTML=h;document.title=(el.querySelector('h1')||{}).textContent||'Fitxa';
+ const el=document.getElementById('a');el.innerHTML=h;
+ const base=f.slice(0,f.lastIndexOf('/')+1);
+ el.querySelectorAll('img').forEach(i=>{const s=i.getAttribute('src');if(s&&!/^(https?:|\/|data:)/.test(s))i.src=base+s});
+document.title=(el.querySelector('h1')||{}).textContent||'Fitxa';
  const go=()=>window.MathJax&&MathJax.typesetPromise?MathJax.typesetPromise([el]):setTimeout(go,150);go();
 }).catch(()=>document.getElementById('a').textContent='No s\'ha pogut carregar la fitxa.');
 </script></body></html>
